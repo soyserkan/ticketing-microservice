@@ -16,7 +16,7 @@ export class Order {
   @Column({ name: 'expires_at' })
   expiresAt: Date;
 
-  @ManyToOne(() => Ticket)
+  @ManyToOne(() => Ticket, (ticket) => ticket.id)
   @JoinColumn()
   ticket: Ticket;
 

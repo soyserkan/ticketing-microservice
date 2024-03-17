@@ -8,7 +8,7 @@ export class Ticket {
   @Column()
   title: string;
 
-  @Column()
+  @Column({ nullable: false, type: 'float' })
   price: number;
 
   @VersionColumn()

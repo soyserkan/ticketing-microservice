@@ -15,7 +15,7 @@ export class Order {
   @VersionColumn()
   version: number;
 
-  @Column()
+  @Column({ nullable: false, type: 'float' })
   price: number;
 
   @CreateDateColumn({ name: 'created_at' })

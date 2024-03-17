@@ -6,29 +6,29 @@ const AppComponent = ({ Component, pageProps, currentUser }) => {
   return (
     <div>
       <Header currentUser={currentUser} />
-      <Component {...pageProps} />
+      <div className="container">
+        <Component currentUser={currentUser} {...pageProps} />
+      </div>
     </div>
   );
 };
 
-AppComponent.getInitialProps = async appContext => {
+AppComponent.getInitialProps = async (appContext) => {
   const client = buildClient(appContext.ctx);
-  const config = {
-    headers: {
-      "Content-Type": "application/json"
-    },
-    withCredentials: true
-  }
-  const { data } = await client.get('http://localhost:9000/api/users/currentuser', config);
+  const { data } = await client.get('http://localhost:9000/api/users/currentuser');
 
   let pageProps = {};
   if (appContext.Component.getInitialProps) {
-    pageProps = await appContext.Component.getInitialProps(appContext.ctx);
+    pageProps = await appContext.Component.getInitialProps(
+      appContext.ctx,
+      client,
+      data.data.currentUser
+    );
   }
 
   return {
     pageProps,
-    ...data
+    ...data.data,
   };
 };
 

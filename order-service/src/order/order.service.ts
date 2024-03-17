@@ -21,12 +21,12 @@ export class OrderService {
   async createOrder(ticketDto: CreateOrderDto, currentUser: JwtServicePayload) {
     const ticket = await this.ticketRepository.findOneBy({ id: ticketDto.ticketId });
     if (!ticket) {
-      return new HttpException(ErrorCodes.TICKET_NOT_FOUND, HttpStatus.NOT_FOUND);
+      throw new HttpException(ErrorCodes.TICKET_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
-    const existingOrder = await this.orderRepository.findOne({ where: { ticket: ticket, status: In([Created, AwaitingPayment, Complete]) } });
+    const existingOrder = await this.orderRepository.findOne({ where: { ticket: { id: ticket.id }, status: In([Created, AwaitingPayment, Complete]) } });
     if (existingOrder) {
-      return new HttpException(ErrorCodes.TICKET_ALREADY_RESERVED, HttpStatus.BAD_REQUEST);
+      throw new HttpException(ErrorCodes.TICKET_ALREADY_RESERVED, HttpStatus.BAD_REQUEST);
     }
 
     const expiration = new Date();
@@ -55,18 +55,18 @@ export class OrderService {
   }
 
   async getOrders(currentUser: JwtServicePayload) {
-    const orders = await this.orderRepository.findBy({ userId: currentUser.id });
+    const orders = await this.orderRepository.find({ where: { userId: currentUser.id }, relations: ['ticket'] });
     return orders;
   }
 
   async getOrder(orderId: number, currentUser: JwtServicePayload) {
-    const order = await this.orderRepository.findOne({ where: { id: orderId } });
+    const order = await this.orderRepository.findOne({ where: { id: orderId }, relations: ['ticket'] });
     if (!order) {
       throw new HttpException(ErrorCodes.ORDER_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
     if (order.userId !== currentUser.id) {
-      return new HttpException(ErrorCodes.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+      throw new HttpException(ErrorCodes.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
     }
 
     return order;
@@ -79,11 +79,11 @@ export class OrderService {
     }
 
     if (order.userId !== currentUser.id) {
-      return new HttpException(ErrorCodes.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+      throw new HttpException(ErrorCodes.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
     }
 
     if (order.status !== Complete) {
-      return new HttpException(ErrorCodes.COMPLETED_ORDER_CANNOT_BE_CANCELLED, HttpStatus.UNAUTHORIZED);
+      throw new HttpException(ErrorCodes.COMPLETED_ORDER_CANNOT_BE_CANCELLED, HttpStatus.UNAUTHORIZED);
     }
 
     order.status = Cancelled;
