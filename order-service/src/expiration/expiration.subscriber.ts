@@ -20,6 +20,10 @@ export class ExpirationSubcriber {
       throw new HttpException(ErrorCodes.ORDER_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
+    if (order.status === OrderStatus.Complete) {
+      return;
+    }
+
     order.status = OrderStatus.Cancelled;
     await this.orderRepository.save(order);
 

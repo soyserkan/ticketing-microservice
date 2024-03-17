@@ -50,6 +50,8 @@ export class OrderService {
         price: createOrder.ticket.price,
       },
     });
+
+    return createOrder;
   }
 
   async getOrders(currentUser: JwtServicePayload) {
@@ -70,7 +72,7 @@ export class OrderService {
     return order;
   }
 
-  async deleteOrder(orderId: number, currentUser: JwtServicePayload) {
+  async cancelOrder(orderId: number, currentUser: JwtServicePayload) {
     const order = await this.orderRepository.findOneBy({ id: orderId });
     if (!order) {
       throw new HttpException(ErrorCodes.ORDER_NOT_FOUND, HttpStatus.NOT_FOUND);
@@ -78,6 +80,10 @@ export class OrderService {
 
     if (order.userId !== currentUser.id) {
       return new HttpException(ErrorCodes.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+    }
+
+    if (order.status !== Complete) {
+      return new HttpException(ErrorCodes.COMPLETED_ORDER_CANNOT_BE_CANCELLED, HttpStatus.UNAUTHORIZED);
     }
 
     order.status = Cancelled;

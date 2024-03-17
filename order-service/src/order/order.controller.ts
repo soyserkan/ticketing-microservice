@@ -28,6 +28,6 @@ export class OrderController {
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async cancelOrder(@Param('id') orderId: number, @CurrentUser() currentUser: JwtServicePayload) {
-    return this.orderService.deleteOrder(orderId, currentUser);
+    return this.orderService.cancelOrder(orderId, currentUser);
   }
 }

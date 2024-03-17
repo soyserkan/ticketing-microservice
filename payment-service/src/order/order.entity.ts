@@ -1,10 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, VersionColumn, ManyToOne } from 'typeorm';
-import { Ticket } from 'src/ticket/ticket.entity';
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, VersionColumn, PrimaryColumn } from 'typeorm';
 import { OrderStatus } from '@ssticketmicroservice/common';
 
 @Entity()
 export class Order {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: number;
 
   @Column({ name: 'user_id' })
@@ -13,15 +12,11 @@ export class Order {
   @Column({ enum: OrderStatus, default: OrderStatus.Created })
   status: OrderStatus;
 
-  @Column({ name: 'expires_at' })
-  expiresAt: Date;
-
-  @ManyToOne(() => Ticket)
-  @JoinColumn()
-  ticket: Ticket;
-
   @VersionColumn()
   version: number;
+
+  @Column()
+  price: number;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
