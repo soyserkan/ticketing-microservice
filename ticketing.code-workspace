@@ -1,0 +1,22 @@
+{
+    "folders": [
+        {
+            "path": "client"
+        },
+        {
+            "path": "auth-service"
+        },
+        {
+            "path": "ticket-service"
+        },
+        {
+            "path": "order-service"
+        },
+        {
+            "path": "expiration-service"
+        }
+    ],
+    "settings": {
+        "search.useIgnoreFiles": false
+    }
+}
