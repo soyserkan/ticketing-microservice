@@ -9,7 +9,7 @@ async function bootstrap() {
 
   try {
     const app = await NestFactory.create(AppModule);
-    await app.listen(port, 'localhost');
+    await app.listen(port);
     logger.log(`Server is running on port: ${port}, env: ${Config.envMode}`);
   } catch (error) {
     logger.error(error);

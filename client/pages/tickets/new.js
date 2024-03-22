@@ -6,7 +6,7 @@ const NewTicket = () => {
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
   const { doRequest, errors } = useRequest({
-    url: 'http://localhost:9001/api/tickets',
+    url: '/api/tickets',
     method: 'post',
     body: {
       title,

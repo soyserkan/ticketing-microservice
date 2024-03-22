@@ -25,7 +25,7 @@ export class OrderService {
     }
 
     const existingOrder = await this.orderRepository.findOne({ where: { ticket: { id: ticket.id }, status: In([Created, AwaitingPayment, Complete]) } });
-    if (existingOrder) {
+    if (existingOrder && existingOrder.userId !== currentUser.id) {
       throw new HttpException(ErrorCodes.TICKET_ALREADY_RESERVED, HttpStatus.BAD_REQUEST);
     }
 

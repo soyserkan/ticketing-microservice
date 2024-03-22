@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-postgres-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-postgres
+  template:
+    metadata:
+      labels:
+        app: payment-postgres
+    spec:
+      containers:
+        - name: payment-postgres
+          image: postgres:14.2
+          env:
+            - name: POSTGRES_DB
+              value: 'payment'
+            - name: POSTGRES_USER
+              value: 'postgres'
+            - name: POSTGRES_PASSWORD
+              value: '123456'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-postgres-srv
+spec:
+  selector:
+    app: payment-postgres
+  ports:
+    - name: payment-postgres
+      protocol: TCP
+      port: 5432
+      targetPort: 5432

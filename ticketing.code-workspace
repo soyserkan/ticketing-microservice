@@ -17,6 +17,9 @@
         },
         {
             "path": "payment-service"
+        },
+        {
+            "path": "infra"
         }
     ],
     "settings": {

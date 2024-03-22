@@ -20,7 +20,7 @@ export const Config = {
   },
   database: {
     type: 'postgres',
-    synchronize: false,
+    synchronize: process.env.NODE_ENV === 'development' ? true : false,
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT),
     database: process.env.DB_NAME,

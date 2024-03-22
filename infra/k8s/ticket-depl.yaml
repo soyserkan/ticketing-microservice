@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-service-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticket-service
+  template:
+    metadata:
+      labels:
+        app: ticket-service
+    spec:
+      containers:
+        - name: ticket-service
+          image: serkansoy/ticketing-ticket-service
+          envFrom:
+            - secretRef:
+                name: ticket-secret
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticket-service-srv
+spec:
+  selector:
+    app: ticket-service
+  ports:
+    - name: ticket-service
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

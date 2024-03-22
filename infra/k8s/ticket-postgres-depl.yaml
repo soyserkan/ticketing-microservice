@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-postgres-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticket-postgres
+  template:
+    metadata:
+      labels:
+        app: ticket-postgres
+    spec:
+      containers:
+        - name: ticket-postgres
+          image: postgres:14.2
+          env:
+            - name: POSTGRES_DB
+              value: 'ticket'
+            - name: POSTGRES_USER
+              value: 'postgres'
+            - name: POSTGRES_PASSWORD
+              value: '123456'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticket-postgres-srv
+spec:
+  selector:
+    app: ticket-postgres
+  ports:
+    - name: ticket-postgres
+      protocol: TCP
+      port: 5432
+      targetPort: 5432

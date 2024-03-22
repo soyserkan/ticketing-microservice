@@ -13,7 +13,7 @@ const OrderIndex = ({ orders }) => {
 };
 
 OrderIndex.getInitialProps = async (context, client) => {
-  const { data } = await client.get('http://localhost:9002/api/orders');
+  const { data } = await client.get('/api/orders');
 
   return { orders: data.data };
 };

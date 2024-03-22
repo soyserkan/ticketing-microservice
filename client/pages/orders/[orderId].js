@@ -6,7 +6,7 @@ import useRequest from '../../hooks/use-request';
 const OrderShow = ({ order, currentUser }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const { doRequest, errors } = useRequest({
-    url: 'http://localhost:9004/api/payments',
+    url: '/api/payments',
     method: 'post',
     body: {
       orderId: order.id,
@@ -49,7 +49,7 @@ const OrderShow = ({ order, currentUser }) => {
 
 OrderShow.getInitialProps = async (context, client) => {
   const { orderId } = context.query;
-  const { data } = await client.get(`http://localhost:9002/api/orders/${orderId}`);
+  const { data } = await client.get(`/api/orders/${orderId}`);
 
   return { order: data.data };
 };
