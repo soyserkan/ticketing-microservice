@@ -20,11 +20,7 @@ async function bootstrap() {
     app.useGlobalFilters(new ExceptionMiddleware(logger));
     app.useGlobalInterceptors(new ResponseInterceptor(logger));
     app.useGlobalPipes(new ValidationPipe({ whitelist: true, stopAtFirstError: true }));
-    app.enableCors({
-      origin: '*',
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-      credentials: true,
-    });
+    app.enableCors({ origin: '*', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', credentials: true });
     app.use(helmet());
 
     const sessionOption: CookieSessionInterfaces.CookieSessionOptions = { signed: false, secure: false };
