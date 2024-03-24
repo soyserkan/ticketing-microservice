@@ -20,6 +20,9 @@
         },
         {
             "path": "infra"
+        },
+        {
+            "path": ".github"
         }
     ],
     "settings": {
